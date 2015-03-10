@@ -4,7 +4,6 @@ class PatientsController < ApplicationController
   end
 
   def destroy
-
     @patient = Patient.find(params[:id])
     if @patient.destroy
       redirect_to root_path
