@@ -1,4 +1,4 @@
-class PrescriptionsController < ApplicationController
+class PrescriptionsController < ApplicationController 
   def new
     @patient = Patient.find(params[:patient_id])
     @prescription = Prescription.new
@@ -10,6 +10,17 @@ class PrescriptionsController < ApplicationController
       allowed_params.merge(:patient => @patient,
                            :prescribed_by => current_user)
     )
+
+    def destroy
+      @patient = Patient.find(params[:patient_id])
+      @prescription = @patient.prescriptions.find(params[:id])
+      if @prescription.destroy
+        redirect_to patient_path(@patient[:id]), notice: "Prescription destroyed"
+      else
+        @patient = Patient.find(params[:patient_id])
+        render :new
+      end
+    end
 
     if @prescription.save
       flash[:notice] = "Your prescription has been created"
